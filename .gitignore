@@ -1,2 +1,6 @@
 
 pyrightconfig.json
+/pvenv
+/whisper-model
+*.wav
+*.txt
