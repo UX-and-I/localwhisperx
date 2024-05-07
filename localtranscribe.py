@@ -203,13 +203,13 @@ def main():
     model_size = config.get("model_size")
 
     # check if Hugging Face token is not the placeholder
-    if hf_token == PLACEHOLDER_HF_TOKEN:
+    if (not hf_token) or (hf_token == PLACEHOLDER_HF_TOKEN):
         print(f"Error: No valid hf_token in {CONFIG_FILE_NAME} -- please add a valid Hugging Face User Access Token.")
         sys.exit(1)
 
     # check for valid model size
     if not model_size in WHISPER_MODEL_SIZES:
-        print(f"Error: No valid model_size in {CONFIG_FILE_NAME} -- please use one of {CONFIG_WHISPER_MODEL_SIZES}.")
+        print(f"Error: No valid model_size in {CONFIG_FILE_NAME} -- please use one of {WHISPER_MODEL_SIZES}.")
         sys.exit(1)
 
     # process single file
