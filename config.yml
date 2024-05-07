@@ -1,0 +1,6 @@
+# Valid Hugging Face User Access Token, see https://huggingface.co/docs/hub/en/security-tokens
+hf_token: PutYourHuggingFaceUserAccessTokenHere
+
+# Model size for Whisper, larger means more accuracy, but also slower
+# valid arguments are tiny, base, small, medium (recommended) and large
+model_size: medium
