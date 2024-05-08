@@ -4,3 +4,4 @@ pyrightconfig.json
 /whisper-model
 *.wav
 *.txt
+/__pycache__

@@ -1,4 +1,5 @@
-# TODO Check why this happens: "No language specified, language will be first be detected for each audio file (increases inference time)."
+# TODO Check why this happens: "No language specified, language will be first be
+# detected for each audio file (increases inference time)."
 import os
 import sys
 import argparse
@@ -7,15 +8,16 @@ import ffmpeg
 import whisperx
 
 # Global constants
-CONFIG_FILE_NAME = "config.yml" # filename for configuration
+CONFIG_FILE_NAME = "config.yml"  # filename for configuration
 PLACEHOLDER_HF_TOKEN = "PutYourHuggingFaceUserAccessTokenHere"
 WHISPER_MODEL_SIZES = ["tiny", "base", "small", "medium", "large"]
 
 # Whisper configuration TODO move to config.yml?
-MODEL_DIRECTORY = "whisper-model/" # directory to download/save whisper model
-DEVICE = "cpu" # change to "cuda" if high on GPU
-BATCH_SIZE = 8 # set to 16 if high on GPU mem
-COMPUTE_TYPE = "int8" # change to "float16" if high on GPU mem (also increases accuracy)
+MODEL_DIRECTORY = "whisper-model/"  # directory to download/save whisper model
+DEVICE = "cpu"  # change to "cuda" if high on GPU
+BATCH_SIZE = 8  # set to 16 if high on GPU mem
+COMPUTE_TYPE = "int8"  # change to "float16" if high on GPU mem (also increases accuracy)
+
 
 def load_config():
     """
@@ -34,9 +36,10 @@ def load_config():
     if os.path.exists(configuration_file_path):
         with open(CONFIG_FILE_NAME, "rt") as config_file:
             config = yaml.load(config_file, Loader=yaml.Loader)
-        return(config)
+        return config
     else:
         return False
+
 
 def is_wav_file(file_path):
     """
@@ -53,6 +56,7 @@ def is_wav_file(file_path):
     # check if the extension is '.wav'
     return extension.lower() == '.wav'
 
+
 def convert_to_wav(input_file, output_file):
     """
     Converts input_file to .wav using ffmpeg, prints an error if conversion not possible
@@ -60,7 +64,12 @@ def convert_to_wav(input_file, output_file):
     print(f"Converting {input_file} to {output_file}")
     try:
         # Stream audio to wav format, suppress output of ffmpeg
-        ffmpeg.input(input_file).output(output_file, format='wav').run(overwrite_output=True, capture_stdout=True, capture_stderr=True)
+        (
+            ffmpeg
+            .input(input_file)
+            .output(output_file, format='wav')
+            .run(overwrite_output=True, capture_stdout=True, capture_stderr=True)
+        )
         print(f"Converted {input_file} to {output_file}.")
         return True
     except ffmpeg.Error as e:
@@ -68,11 +77,13 @@ def convert_to_wav(input_file, output_file):
         # TODO actual error handling?, e.g. sys.exit(1)
         return False
 
+
 def convert_to_string(value, default="{None}"):
     """
     Converts value to a string, using a default if None is encountered.
     """
     return str(value) if value is not None else default
+
 
 def save_result(result, file_name):
     """
@@ -84,8 +95,8 @@ def save_result(result, file_name):
     """
     # delete, if file exists already
     if os.path.exists(file_name):
-            os.remove(file_name)
-            print(f"Existing file {file_name} was deleted")
+        os.remove(file_name)
+        print(f"Existing file {file_name} was deleted")
 
     # initiate variables
     currentspeaker = ""
@@ -104,8 +115,9 @@ def save_result(result, file_name):
                 # set to new speaker and text
                 currentspeaker = i.get("speaker")
                 currenttext = i.get("text")
-        file.flush() # make sure, all changes are written to the file
+        file.flush()  # make sure, all changes are written to the file
     print(f"Result written to {file_name}")
+
 
 def transcribe_and_diarize(audio_file, spoken_language, min_speakers, max_speakers, auth_token, model_size):
     """
@@ -143,6 +155,7 @@ def transcribe_and_diarize(audio_file, spoken_language, min_speakers, max_speake
 
     return result
 
+
 def process_file(file_path, language, min_speaker, max_speaker, auth_token, model_size):
     """
     Transcribes an audio/video file using an LLM and assigns speaker labels
@@ -159,11 +172,15 @@ def process_file(file_path, language, min_speaker, max_speaker, auth_token, mode
     if not is_wav_file(file_path):
         converted_file_path = file_path + ".wav"
         successfulconversion = convert_to_wav(file_path, converted_file_path)
-        file_path = converted_file_path # cheeky: re-use previous file_path with converted filename
+        file_path = converted_file_path  # cheeky: re-use previous file_path with converted filename
     if successfulconversion:
         # process file
         print(f"Processing {file_path} ...")
-        # DEBUG print(f"DEBUG Language: {language}, Min Speakers: {min_speaker}, Max Speakers: {max_speaker}, Model Size: {model_size}")
+        # DEBUG
+        # print(
+        #    f"DEBUG Language: {language}, Min Speakers: {min_speaker}, "
+        #    f"Max Speakers: {max_speaker}, Model Size: {model_size}"
+        # )
         result = transcribe_and_diarize(file_path, language, min_speaker, max_speaker, auth_token, model_size)
         # append .txt to existing filename
         result_file_path = file_path + ".txt"
@@ -182,12 +199,13 @@ def parse_args():
         args.min_speaker: int - Minimum number of speakers
         args.max_speaker: int - Maximum number of speakers
     """
-    parser = argparse.ArgumentParser(description="Convert audio or video to a human-readable transcript using a local LLM (Whisper).")
+    parser = argparse.ArgumentParser(description="Convert media to transcript using local LLM.")
     parser.add_argument("path", help="Path to audio/video file or directory to transcribe")
     parser.add_argument("--language", help="Language spoken in all files", default="de")
     parser.add_argument("--min_speaker", help="Minimum number of speakers", type=int, default=1)
     parser.add_argument("--max_speaker", help="Maximum number of speakers", type=int, default=2)
     return parser.parse_args()
+
 
 def main():
     """
@@ -208,7 +226,7 @@ def main():
         sys.exit(1)
 
     # check for valid model size
-    if not model_size in WHISPER_MODEL_SIZES:
+    if model_size not in WHISPER_MODEL_SIZES:
         print(f"Error: No valid model_size in {CONFIG_FILE_NAME} -- please use one of {WHISPER_MODEL_SIZES}.")
         sys.exit(1)
 
@@ -224,6 +242,7 @@ def main():
     else:
         print(f"Error: The provided file/path does not exist: {args.path}")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
