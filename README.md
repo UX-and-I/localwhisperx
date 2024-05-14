@@ -13,73 +13,84 @@ This script has been tested on Mac OS 14.4.1 (23E224). Your milage on Windows or
 These instructions are for usage on Mac OS:
 
 - Download and install Python from https://www.python.org/downloads/
-- Install Homebrew, see https://brew.sh/
-- Open a Termin and install ffmpeg with the following command:
+- Open a Terminal and install Homebrew, see https://brew.sh/
+- In the open Terminal install [FFmpeg](https://ffmpeg.org/) with the following command:
   ```sh
   brew install ffmpeg
   ```
+- If you haven't already, create an account on [Hugging Face](https://huggingface.co/join)
 
 ### Installation
 
 - Download this repository and extract it to a folder of you choice. You should see these files:
   - `config.yml`
   - `localtranscribe.py`
-- In the terminal change to the directory, create a Python environment and activate it:
+- Install these necessary Python modules:
   ```sh
-  cd local/path/to/this/repository
-  python3 -m venv pvenv
-  source pvenv/bin/activate
+  pip3 install pyyaml
+  pip3 install ffmpeg-python
+  pip3 install git+https://github.com/m-bain/whisperx.git
   ```
-- Install a couple of necessary Python modules within the environment:
-  ```sh
-  pip install pyyaml
-  pip install ffmpeg-python
-  pip install git+https://github.com/m-bain/whisperx.git
-  ```
-- TODO! HF-Token
+- Open `config.yml` with your favourite Editor, e.g. TextEdit and add your [Huggin Face User Access Token](https://huggingface.co/settings/tokens) in the appropriate line
 
 ## Usage
 
-Put your audio and or video files into a directory and run the following command within the activated Python environment:
-
-```sh
-python localtranscribe.py your/audio/or/video/file/or/folder
-```
-
-This will run the script and create a .txt file for the provided file file or run for the complete directory.
-
-TODO! On the first run it will download a LLM, requires a couple of free gigabytes
-
-- TODO! typical output and progress should look like this
+- Put your audio and/or video files into a directory and open a Terminal.
+- In the open Terminal change to the directory, where you extracted this repository:
   ```sh
-  (pvenv) user@mbp locatranscribe % python localtranscribe short.wav
-  Processing short.wav ...
-  Transcribing short.wav ...
-  Aligning output for short.wav ...
-  Assigning speaker labels in short.wav ...
-  Finished transcribing short.wav
-  Result written to short.wav.txt
-  (pvenv) user@mbp locatranscribe %
+  cd path/to/unzipped/localtranscribe
   ```
+- Transcribe your files with the following command
+  ```sh
+  python3 localtranscribe.py your/audio/or/video/file/or/folder
+  ```
+  This will run the script and create a .txt file for the provided file or all files within the given directory.
+
+On the first run the program will download a local copy of a large language model (LLM) which requires a couple of free gigabytes.
 
 ### Command line arguments
 
-The script takes the following command line arguments:
+The script can take a couple of command line arguments to refine your transcription:
 
-- `--language` TODO
-- `--max_speaker` TODO
-- `--min_speaker` TODO
+- `--language` Language spoken in all files, e.g. `en`; default is `de`
+- `--minspeaker` Minimum number of speakers; default is `1`
+- `--maxspeaker` Minimum number of speakers; default is `2`
+
+Here's a example, converting an english language audio file with exactly 4 speakers:
+
+```sh
+python3 localtranscribe.py test.mp3 --language en --minspeaker 4 --maxspeaker 4
+```
+
+### Selecting a model size
+
+The file `config.yml` contains a line to change the LLM-model size. A larger model will generally result in a more accurate transcription. Likewise processing time will increase.
+
+You can select one of the follwing options:
+
+- `tiny`
+- `base`
+- `small`
+- `medium` (default, recommended compromise of accuracy and processing time)
+- `large`
 
 ## Trouble Shooting
 
-TODO! Ignore warnings, e.g.
+The tool might show a couple of warnings -- it is safe to ignore these:
 
-- "UserWarning: torchaudio.\_backend.set_audio_backend has been deprecated. With dispatcher enabled, this function is no-op. You can remove the function call.
-  torchaudio.set_audio_backend("soundfile")
-  torchvision is not available - cannot save figures"
-- Model was trained with pyannote.audio 0.0.1, yours is 3.1.1. Bad things might happen unless you revert pyannote.audio to 0.x.
-- Model was trained with torch 1.10.0+cu102, yours is 2.3.0. Bad things might happen unless you revert torch to 1.x.
+```sh
+UserWarning: torchaudio.\_backend.set_audio_backend has been deprecated. With dispatcher enabled, this function is no-op. You can remove the function call.
+torchaudio.set_audio_backend("soundfile")
+torchvision is not available - cannot save figures
+Model was trained with pyannote.audio 0.0.1, yours is 3.1.1. Bad things might happen unless you revert pyannote.audio to 0.x.
+Model was trained with torch 1.10.0+cu102, yours is 2.3.0. Bad things might happen unless you revert torch to 1.x.
+```
+
+## Next steps
+
+If you're transcribing interviews put the resulting transcriptions into [ChatGPT](https://chatgpt.com/auth/login). Maybe try using the [Interview Analyst GPT](https://chatgpt.com/g/g-bTO2IaM1V-interview-analyst) and see what a quick analysis will result in.
 
 ## Acknowledgments
 
 - [WhisperX](https://github.com/m-bain/whisperX)
+- [FFmpeg]()
