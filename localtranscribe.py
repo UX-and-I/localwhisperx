@@ -178,8 +178,8 @@ def process_file(file_path, language, min_speaker, max_speaker, auth_token, mode
         print(f"Processing {file_path} ...")
         # DEBUG
         # print(
-        #    f"DEBUG Language: {language}, Min Speakers: {min_speaker}, "
-        #    f"Max Speakers: {max_speaker}, Model Size: {model_size}"
+        #    f"DEBUG Language: {language}, Min Speakers: {minspeaker}, "
+        #    f"Max Speakers: {maxspeaker}, Model Size: {model_size}"
         # )
         result = transcribe_and_diarize(file_path, language, min_speaker, max_speaker, auth_token, model_size)
         # append .txt to existing filename
@@ -196,14 +196,14 @@ def parse_args():
 
     Returns:
         args.language: str - Language spoken in all files
-        args.min_speaker: int - Minimum number of speakers
-        args.max_speaker: int - Maximum number of speakers
+        args.minspeaker: int - Minimum number of speakers
+        args.maxspeaker: int - Maximum number of speakers
     """
     parser = argparse.ArgumentParser(description="Convert media to transcript using local LLM.")
     parser.add_argument("path", help="Path to audio/video file or directory to transcribe")
     parser.add_argument("--language", help="Language spoken in all files", default="de")
-    parser.add_argument("--min_speaker", help="Minimum number of speakers", type=int, default=1)
-    parser.add_argument("--max_speaker", help="Maximum number of speakers", type=int, default=2)
+    parser.add_argument("--minspeaker", help="Minimum number of speakers", type=int, default=1)
+    parser.add_argument("--maxspeaker", help="Maximum number of speakers", type=int, default=2)
     return parser.parse_args()
 
 
@@ -232,13 +232,13 @@ def main():
 
     # process single file
     if os.path.isfile(args.path):
-        process_file(args.path, args.language, args.min_speaker, args.max_speaker, hf_token, model_size)
+        process_file(args.path, args.language, args.minspeaker, args.maxspeaker, hf_token, model_size)
     # process all files within given directory
     elif os.path.isdir(args.path):
         for filename in os.listdir(args.path):
             full_path = os.path.join(args.path, filename)
             if os.path.isfile(full_path):
-                process_file(full_path, args.language, args.min_speaker, args.max_speaker, hf_token, model_size)
+                process_file(full_path, args.language, args.minspeaker, args.maxspeaker, hf_token, model_size)
     else:
         print(f"Error: The provided file/path does not exist: {args.path}")
         sys.exit(1)
