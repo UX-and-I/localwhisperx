@@ -93,4 +93,4 @@ If you're transcribing interviews put the resulting transcriptions into [ChatGPT
 ## Acknowledgments
 
 - [WhisperX](https://github.com/m-bain/whisperX)
-- [FFmpeg]()
+- [FFmpeg](https://ffmpeg.org/)
