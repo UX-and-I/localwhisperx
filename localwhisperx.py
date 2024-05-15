@@ -1,5 +1,3 @@
-# TODO Check why this happens: "No language specified, language will be first be
-# detected for each audio file (increases inference time)."
 import os
 import sys
 import argparse

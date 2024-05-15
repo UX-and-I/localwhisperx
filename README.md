@@ -1,8 +1,10 @@
-# localtranscribe.py
+# localwhisperx.py
 
 ## About
 
 Performs local speech to text transcription and speaker identification of audio and video files.
+
+Useful for
 
 ## Getting Started
 
@@ -24,7 +26,7 @@ These instructions are for usage on Mac OS:
 
 - Download this repository and extract it to a folder of you choice. You should see these files:
   - `config.yml`
-  - `localtranscribe.py`
+  - `localwhisperx.py`
 - Install these necessary Python modules:
   ```sh
   pip3 install pyyaml
@@ -38,11 +40,11 @@ These instructions are for usage on Mac OS:
 - Put your audio and/or video files into a directory and open a Terminal.
 - In the open Terminal change to the directory, where you extracted this repository:
   ```sh
-  cd path/to/unzipped/localtranscribe
+  cd path/to/unzipped/localwhisperx
   ```
 - Transcribe your files with the following command
   ```sh
-  python3 localtranscribe.py your/audio/or/video/file/or/folder
+  python3 localwhisperx.py your/audio/or/video/file/or/folder
   ```
   This will run the script and create a .txt file for the provided file or all files within the given directory.
 
@@ -59,7 +61,7 @@ The script can take a couple of command line arguments to refine your transcript
 Here's a example, converting an english language audio file with exactly 4 speakers:
 
 ```sh
-python3 localtranscribe.py test.mp3 --language en --minspeaker 4 --maxspeaker 4
+python3 localwhisperx.py test.mp3 --language en --minspeaker 4 --maxspeaker 4
 ```
 
 ### Selecting a model size
