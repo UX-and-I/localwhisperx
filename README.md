@@ -6,6 +6,12 @@ Performs local speech to text transcription and speaker identification of audio 
 
 Especially useful for transcription of user interviews where confidentially might be an issue or where data privacy is needed. No data leaves your computer, everything runs locally.
 
+Transcription will take pretty long compared to what you might be used to, since this script does not use any GPU optimization.
+
+On a 2023 Mac M3 Pro this script runs roughly in real-time, meaning one minute of audio will take about one minute. Identifying speakers takes most of this time.
+
+For many or large files it might be best to run this tool over night.
+
 ## Getting Started
 
 This script has been tested on Mac OS 14.4.1 (23E224). Your milage on Windows or another OS might vary.
@@ -21,6 +27,7 @@ These instructions are for usage on Mac OS:
   brew install ffmpeg
   ```
 - If you haven't already, create an account on [Hugging Face](https://huggingface.co/join)
+  - Note! This is only used to download a model from Hugging Face, no training or other data will leave your computer.
 
 ### Installation
 
@@ -73,7 +80,7 @@ You can select one of the follwing options:
 - `tiny`
 - `base`
 - `small`
-- `medium` (default, recommended compromise of accuracy and processing time)
+- `medium` (default, recommended compromise of accuracy and processing time, takes about 1.5 GB of space on your harddisk)
 - `large`
 
 ## Trouble Shooting
