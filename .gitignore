@@ -5,3 +5,4 @@ pyrightconfig.json
 *.wav
 *.txt
 /__pycache__
+.DS_Store
