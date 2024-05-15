@@ -4,7 +4,7 @@
 
 Performs local speech to text transcription and speaker identification of audio and video files.
 
-Useful for
+Especially useful for transcription of user interviews where confidentially might be an issue or where data privacy is needed. No data leaves your computer, everything runs locally.
 
 ## Getting Started
 
