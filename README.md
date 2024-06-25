@@ -28,6 +28,9 @@ These instructions are for usage on Mac OS:
   ```
 - If you haven't already, create an account on [Hugging Face](https://huggingface.co/join)
   - Note! This is only used to download a model from Hugging Face, no training or other data will leave your computer.
+- Log in to Hugging Face and accept the following user conditions:
+  - https://huggingface.co/pyannote/segmentation-3.0
+  - https://huggingface.co/pyannote/speaker-diarization-3.1
 
 ### Installation
 
